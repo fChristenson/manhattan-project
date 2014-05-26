@@ -1,0 +1,62 @@
+<div>
+    <div class="well">
+        <h2>Edit backlogs</h2>
+        <div>
+          <button class="btn btn-success" ng-click="addBacklog()">
+            <span class="glyphicon glyphicon-plus"></span> Add backlog
+          </button> 
+        </div>
+    </div>
+    <form novalidate class="form edit-backlog-form">
+        <div>
+            <label class="label label-success" for="backlogs">Backlogs</label>
+            <select id="backlogs" class="form-control" ng-model="selectedBacklog" ng-options="backlog as backlog.name for backlog in backlogs"></select>
+        </div>
+        <div>
+            <label class="label label-success" for="backlogName">Name</label>
+            <input id="backlogName" class="form-control" type="text" placeholder="Name" ng-model="selectedBacklog.name">
+        </div>
+        <div>
+            <label class="label label-success" for="owner">Product owner</label>
+            <input id="owner" class="form-control" type="text" placeholder="Product owner" ng-model="selectedBacklog.owner">
+        </div>
+<!-- team member list -->
+
+        <label class="label label-success" for="team">Team members</label>
+        <ul class="list list-unstyled list-inline">
+            <li ng-repeat="teamMember in selectedBacklog.teamMembers | orderBy: teamMember"><span class="badge" ng-click="">{{teamMember}}</span></li>
+        </ul>
+        <div class="input-group">
+             <input id="team" type="text" class="form-control" placeholder="Team member"  ng-model="member">
+             <div class="input-group-btn">
+               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
+               <ul class="dropdown-menu pull-right">
+                 <li><a ng-click="add(member, 'teamMembers')"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
+                 <li><a ng-click="remove(member, selectedBacklog.teamMembers)"><span class="glyphicon glyphicon-minus"></span> Remove</a></li>
+               </ul>
+             </div>
+        </div>
+
+<!-- end team member list -->
+<!-- stakeholder list -->
+
+        <label class="label label-success" for="investers">Stakeholders</label>
+        <ul class="list list-unstyled list-inline">
+            <li ng-repeat="stakeholder in selectedBacklog.stakeholders | orderBy: stakeholder"><span class="badge" ng-click="">{{stakeholder}}</span></li>
+        </ul>
+        <div class="input-group">
+             <input id="investers" type="text" class="form-control" placeholder="Stakeholders"  ng-model="stakeholder">
+             <div class="input-group-btn">
+               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Action <span class="caret"></span></button>
+               <ul class="dropdown-menu pull-right">
+                 <li><a ng-click="add(stakeholder, 'stakeholders')"><span class="glyphicon glyphicon-plus"></span> Add</a></li>
+                 <li><a ng-click="remove(stakeholder, selectedBacklog.stakeholders)"><span class="glyphicon glyphicon-minus"></span> Remove</a></li>
+               </ul>
+             </div>
+        </div>
+
+<!-- stakeholder list -->
+        <input class="btn btn-primary" type="submit" ng-submit="" value="Save" ng-click="save()">
+        <input class="btn btn-danger" type="submit" ng-submit="" value="Remove" ng-click="remove()">
+    </form>
+</div>

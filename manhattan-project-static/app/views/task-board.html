@@ -1,0 +1,129 @@
+	<div class="row-fluid" ng-repeat="row in taskBoard">
+		<div>
+		  <accordion>
+		    <accordion-group heading="{{row.userstory.name}}">
+		    <!-- to do colum -->
+	  			<div class="col-md-3">
+					<accordion>
+						<accordion-group is-Open="true">
+							<accordion-heading>
+								<div class="red padded">To do</div>
+							</accordion-heading>
+						  	<ul class="list-unstyled tasks">
+						  		<li ng-repeat="task in row.toDo | orderBy: name">
+							  		<div class="well task-div" ng-click="openTaskInfo(row, row.toDo, task)">
+							  			<div>
+							  				{{task.name}} <small><span class="badge">{{task.estimate}}h</span></small>
+							  			</div>
+							  		</div>
+						  		</li>
+						  	</ul>
+						</accordion-group>
+					</accordion>
+	  			</div>
+	  			<!-- end to do colum -->
+	  			<!-- in progress colum -->
+	  			<div class="col-md-3">
+	  			<accordion>
+	  				<accordion-group is-Open="true">
+	  				<accordion-heading>
+						<div class="yellow padded">In progress</div>
+	  				</accordion-heading>
+	  				  	<ul class="list-unstyled tasks">
+	  				  		<li ng-repeat="task in row.inProgress | orderBy: name">
+	  					  		<div class="well task-div" ng-click="openTaskInfo(row, row.inProgress, task)">
+	  					  			{{task.name}} <small><span class="badge">{{task.estimate}}h</span></small>
+	  					  		</div>
+	  				  		</li>
+	  				  	</ul>
+	  				</accordion-group>
+	  			</accordion>
+	  			</div>
+	  			<!-- end in progress colum -->
+  				<!-- to test colum -->
+	  			<div class="col-md-3">
+	  			<accordion>
+	  				<accordion-group is-Open="true">
+	  				<accordion-heading>
+						<div class="blue padded">To test</div>
+	  				</accordion-heading>
+	  				  	<ul class="list-unstyled tasks">
+	  				  		<li ng-repeat="task in row.toTest | orderBy: name">
+	  					  		<div class="well task-div" ng-click="openTaskInfo(row, row.toTest, task)">
+	  					  			{{task.name}} <small><span class="badge">{{task.estimate}}h</span></small>
+	  					  		</div>
+	  				  		</li>
+	  				  	</ul>
+	  				</accordion-group>
+	  			</accordion>
+	  			</div>
+	  			<!-- end to test colum -->
+	  			<!-- done colum -->
+	  			<div class="col-md-3">
+	  			<accordion>
+	  				<accordion-group is-Open="true">
+	  					<accordion-heading>
+							<div class="green padded">Done</div>
+	  					</accordion-heading>
+	  				  	<ul class="list-unstyled tasks">
+	  				  		<li ng-repeat="task in row.taskDone | orderBy: name">
+	  					  		<div class="well task-div" ng-click="openTaskInfo(row, row.taskDone, task)">
+	  					  			{{task.name}} <small><span class="badge">{{task.estimate}}h</span></small>
+	  					  		</div>
+	  				  		</li>
+	  				  	</ul>
+	  				</accordion-group>
+	  			</accordion>
+	  			</div>
+	  			<!-- end done colum -->
+	  			</div>
+		    </accordion-group>
+		  </accordion>
+		</div>
+	</div>
+</div>
+<!-- task info -->
+<div class="panel panel-default task-info" ng-model="selectedRow" ng-show="showTaskInfo">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+    	{{selectedRow.task.name}}
+    	<small><span class="badge">{{selectedRow.task.estimate}}h</span></small>
+    </h3>
+    <button class="btn btn-danger" ng-click="showTaskInfo = false">
+    	<span class="glyphicon glyphicon-remove"></span>
+    </button>
+  </div>
+  <div class="panel-body">
+	<div>
+	  	<ul class="list-unstyled">
+			<li class="description">Description: {{selectedRow.task.description}}</li>
+			<hr class="black">
+			<li>Assigned to: {{selectedRow.task.assignedTo}}</li>
+	  	</ul>
+	</div>
+	<div>
+		<ul class="list-unstyled list-inline">
+			<li>
+				<button class="btn btn-primary" ng-click="moveToColum(selectedRow, 'TODO')">
+					To do
+				</button>
+			</li>
+			<li>
+				<button class="btn btn-primary" ng-click="moveToColum(selectedRow, 'IN_PROGRESS')">
+					In progress
+				</button>
+			</li>
+			<li>
+				<button class="btn btn-primary" ng-click="moveToColum(selectedRow, 'TO_TEST')">
+					To test
+				</button>
+			</li>
+			<li>
+				<button class="btn btn-primary" ng-click="moveToColum(selectedRow, 'DONE')">
+					Done
+				</button>
+			</li>
+		</ul>
+	</div>
+  </div>
+<!-- end taskinfo -->

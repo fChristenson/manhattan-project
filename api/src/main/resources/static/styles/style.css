@@ -1,0 +1,130 @@
+/* Author fidde*/
+body{
+	background-image: url("/images/bg.jpg");
+}
+/* backlog */
+.backlog-info{
+	font-weight: bolder;
+}
+.userstory-form, .sprint-form, .task-form{
+	border-radius: 0.3em;
+	position: fixed;
+	background-color: rgba(66, 66, 66, 0.4);
+	padding: 1em;
+}
+.userstory-form, .sprint-form{
+	right: 1em;
+	top: 1em;
+}
+.task-form{
+	left: 1em;
+	top: 1em;
+}
+.well{
+	overflow: auto;
+	position: relative;
+}
+.well div > .btn{
+	position: absolute;
+	right: 1em;
+	top: 3em;
+}
+.panel-heading{
+	overflow: auto;
+}
+.panel-heading ul{
+	float: right;
+}
+.panel-heading > div:first-child{
+	margin-bottom: 1em;
+}
+.panel-heading h3{
+	float: left;
+	margin: 0.5em 0 0.5em;
+}
+.panel-title{
+	font-weight: bolder;
+}
+.description{
+	font-weight: bold;
+}
+.form-group > input[type="number"]{
+	min-width: 5.7em;
+}
+.taskInfo-backlog{
+	bottom: 1em;
+	right: 1em;
+}
+@media screen and (max-width: 700px){
+.well div > .btn{
+	position: static;
+}
+}
+
+/* sprint */
+legend{
+	color: white;
+	font-size: 16px;
+}
+.userstory-select{
+	display: block;
+	margin: 0.5em;
+}
+accordion div {
+	overflow: auto;
+}
+.sprint-btn-list, .remove-sprint-btn{
+	margin-bottom: 0.5em;
+	float: right;
+	z-index: 10;
+}
+
+/*Task board */
+.row h4 {
+	font-weight: bolder;
+}
+.task-div{
+	cursor: pointer;
+}
+.tasks li{
+	margin-top: 1em;
+}
+.tasks div{
+	font-size: 0.9em;
+}
+.task-info, .taskInfo-backlog{
+	position: fixed;
+}
+.task-info{
+	top: 1em;
+	right: 1em;
+}
+.task-info .btn{
+	float: right;
+}
+.story-done{
+	border-color: green;
+	color: green;
+}
+.padded{
+	padding: 1em;
+}
+.green{
+	background-color: #47a447;
+}
+.blue{
+	background-color: #39B3D7;
+}
+.yellow{
+	background-color: #ED9C28;
+}
+.red{
+	background-color: #D2322D;
+}
+a:hover{
+	cursor: pointer;
+}
+/* edit backlog */
+.edit-backlog-form div{
+	margin-bottom: 1em;
+}

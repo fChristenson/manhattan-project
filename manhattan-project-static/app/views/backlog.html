@@ -1,0 +1,178 @@
+<!-- backlog header -->
+<div ng-show="isDoneRendering">
+  <div class="well">
+  <ul class="list-inline list-unstyled">
+    <li> <h2>Backlog</h2> </li>
+    <li>  <input maxlength="50" type="text" class="form-control" placeholder="Filter backlog" ng-model="filterText"> </li>
+  </ul>
+  <div>
+    <button class="btn btn-success" ng-click="addUserstory()" ng-disabled="showStoryForm || showTaskForm">
+      <span class="glyphicon glyphicon-plus"></span> Add Userstory
+    </button> 
+  </div>
+<!-- backlog info -->
+  <div class="backlog-info">
+    <div>
+      <ul class="list list-unstyled">
+        <li>
+          <span>Backlog name:</span>
+          <span class="badge">{{backlog.name}}</span>
+          <span>Product owner: </span>
+          <span class="badge">{{backlog.owner}}</span>
+        </li>
+        <li>
+          <div>
+            <span>Team: </span>
+            <ul class="list list-unstyled list-inline">
+              <li ng-repeat="member in backlog.teamMembers | orderBy: member"><span class="badge">{{member}}</span></li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <div>
+            <span>Investers: </span>
+            <ul class="list list-unstyled list-inline">
+              <li ng-repeat="invester in backlog.stakeholders"><span class="badge">{{invester}}</span></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </div>
+  <!-- end backlog header -->
+  <!-- userstory list -->
+  <ul class="list-unstyled" ui-sortable ng-model="backlog">
+    <li ng-repeat="userstory in backlog.userStories | orderBy: name | filter:filterText">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{userstory.name}}</h3>
+          <ul class="list-unstyled list-inline">
+            <li>
+              <button class="btn btn-success" ng-click="addTask(userstory)" ng-disabled="showStoryForm || showTaskForm">
+                <span class="glyphicon glyphicon-plus"></span> Add Task
+              </button> 
+            </li>
+            <li>
+              <button class="btn btn-info" ng-click="editUserstory(userstory)" ng-disabled="showStoryForm || showTaskForm">
+                <span class="glyphicon glyphicon-edit"></span> Edit
+              </button>
+            </li>
+            <li>
+              <button class="btn btn-danger" ng-click="removeUserstory(userstory)" ng-disabled="showStoryForm || showTaskForm">
+                  <span class="glyphicon glyphicon-trash"></span> 
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="panel-body">
+          <div class="description">Description: {{userstory.description}}</div>
+          <hr>
+          <ul class="list-inline">
+            <li>Estimate: {{userstory.estimate}}</li>
+            <li>Type: {{userstory.type}}</li>
+            <li>Author: {{userstory.author}}</li>
+            <li><small>Tag: {{userstory.tag}}</small></li>
+          </ul>
+          <accordion>
+            <accordion-group>
+            <accordion-heading>Tasks</accordion-heading>
+                <ol class="breadcrumb">
+                  <li ng-repeat="task in userstory.tasks | orderBy: name">
+                    <a ng-click="showTask(userstory, task)">{{task.name}}</a>
+                  </li>
+                </ol>
+              </accordion-group>
+          </accordion>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <!-- end userstory list -->
+  <!-- userstory form -->
+  <div class="userstory-form" ng-show="showStoryForm">
+    <form class="form" novalidate>
+      <div class="form-group">
+        <input class="form-control"  maxlength="50" type="text" placeholder="Name" ng-model="activeUserstory.name" maxlength="50">
+
+        <input class="form-control" type="text" placeholder="Description" ng-model="activeUserstory.description" maxlength="50">
+
+        <input type="text" maxlength="50" class="form-control" placeholder="Author"  ng-model="activeUserstory.author">
+      
+        <input class="form-control" maxlength="50" type="text" placeholder="Tag" ng-model="activeUserstory.tag">
+      </div>
+      <div class="form-group">
+        <input class="form-inline" type="number" placeholder="Estimate"  ng-model="activeUserstory.estimate" min="0" max= "100">
+        <select class="form-inline" ng-options="type.id as type.label for type in storyTypes" ng-model="activeUserstory.type"></select>
+      </div>
+      <button class="btn btn-success" ng-click="saveUserstory(activeUserstory)">
+        <span class="glyphicon glyphicon-plus"></span> Save
+      </button>
+      <button class="btn btn-danger" ng-click="showStoryForm = false">
+        <span class="glyphicon glyphicon-remove"></span> Close
+      </button>
+    </form>
+  </div>
+  <!-- end userstory form -->
+  <!-- task form -->
+  <div class="task-form" ng-show="showTaskForm">
+    <form class="form" novalidate>
+      <div class="form-group">
+        <input class="form-control" maxlength="50" type="text" placeholder="Name" ng-model="activeTask.name" maxlength="50">
+
+        <input class="form-control" maxlength="50" type="text" placeholder="Description" ng-model="activeTask.description" maxlength="50">
+
+        <input type="text" class="form-control" maxlength="50" placeholder="Assigned to"  ng-model="activeTask.assignedTo">
+      </div>
+      <div class="form-group">
+        <input class="form-inline" type="number" placeholder="Hours"  ng-model="activeTask.estimate" min="0" max= "100">
+      </div>
+      <button class="btn btn-success" ng-click="saveTask(activeTask)">
+        <span class="glyphicon glyphicon-plus"></span> Save
+      </button>
+      <button class="btn btn-danger" ng-click="showTaskForm = false">
+        <span class="glyphicon glyphicon-remove"></span> Close
+      </button>
+    </form>
+  </div>
+  <!-- end task form -->
+  <!-- task info box -->
+  <div class="panel panel-default taskInfo-backlog" ng-show="showTaskInfo">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+          {{activeTask.name}}
+          <small><span class="badge">{{activeTask.estimate}}h</span></small>
+        </h3>
+      <div>
+        <ul class="list-unstyled list-inline">
+          <li>
+            <button class="btn btn-info" ng-click="editTask()">
+              <span class="glyphicon glyphicon-edit"></span> Edit
+            </button>
+          </li>
+          <li>
+            <button class="btn btn-danger" ng-click="removeTask(activeTask)">
+              <span class="glyphicon glyphicon-trash"></span> Remove
+            </button>
+          </li>
+          <li>
+            <button class="btn btn-danger" ng-click="showTaskInfo = false">
+              <span class="glyphicon glyphicon-remove"></span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel-body">
+    <div>
+        <ul class="list-unstyled">
+        <li class="description">Description: {{activeTask.description}}</li>
+        <hr class="black">
+        <li>Assigned to: {{activeTask.assignedTo}}</li>
+        </ul>
+    </div>
+    </div>
+  </div>
+  <!-- end task info box -->
+<!-- end userstory list -->
+</div>

@@ -1,0 +1,94 @@
+<div ng-show="isDoneRendering">
+  <div class="well">
+      <h3>Sprint</h3>
+      <div>
+        <button class="btn btn-success" ng-click="addSprint()" ng-disabled="showSprintForm">
+          <span class="glyphicon glyphicon-plus"></span> Add Sprint
+        </button> 
+      </div>
+  </div>
+  <!-- sprints -->
+  <div>
+    <div>
+      <accordion ng-repeat="sprint in backlog.sprints | orderBy: name">
+        <accordion-group>
+          <accordion-heading>
+            {{sprint.name}}
+            <ul class="list-unstyled list-inline sprint-btn-list">
+              <li ng-show="sprintIsDone(sprint)">Done <span class="glyphicon glyphicon-ok-sign"></span></li>
+              <li ng-switch on="sprint.state">
+                <button class="btn btn-success" ng-switch-when="IN_PLANNING" ng-disabled="showSprintForm || hasActiveSprint || sprint.userStories.length < 1" ng-click="toggleActive(sprint)">
+                  <span class="glyphicon glyphicon-plus"></span> Start
+                </button>
+                <button class="btn btn-danger" ng-switch-when="IN_PROGRESS" ng-disabled="showSprintForm" ng-click="toggleActive(sprint)">
+                  <span class="glyphicon glyphicon-minus"></span> Stop
+                </button>
+              </li>
+              <li>
+                <button class="btn btn-info" ng-click="editSprint(sprint)" ng-disabled="showSprintForm">
+                  <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
+              </li>
+              <li>
+                <button class="btn btn-danger" ng-click="removeSprint(sprint)" ng-disabled="showSprintForm">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </li>
+            </ul>
+          </accordion-heading>
+            <accordion ng-repeat="userstory in sprint.userStories">
+                <accordion-group>
+                <accordion-heading>
+                  {{userstory.name}}
+                  <button class="btn btn-danger remove-sprint-btn" ng-click="removeUserstory(sprint, userstory)" ng-disabled="showSprintForm">
+                      <span class="glyphicon glyphicon-trash"></span>
+                  </button>
+              </accordion-heading>
+                    <div class="description">Description: {{userstory.description}}</div>
+                    <hr>
+                    <ul class="list-inline">
+                      <li>Estimate: {{userstory.estimate}}</li>
+                      <li>Type: {{userstory.type}}</li>
+                      <li>Author: {{userstory.author}}</li>
+                    </ul>
+                    <accordion>
+                      <accordion-group>
+                      <accordion-heading>Tasks</accordion-heading>
+                          <ol class="breadcrumb">
+                            <li ng-repeat="task in userstory.tasks | orderBy: name">
+                              <a ng-click="showTask(task)">{{task.name}}</a>
+                            </li>
+                          </ol>
+                        </accordion-group>
+                    </accordion>
+                </accordion-group>
+            </accordion>
+        </accordion-group>
+        </accordion>
+    </div>
+  </div>
+<!-- end sprints -->
+<!-- sprint form -->
+<div class="sprint-form" ng-show="showSprintForm">
+<form class="form" novalidate>
+  <input class="form-control" maxlength="50" type="text" placeholder="Sprint name" ng-model="activeSprint.name">
+  <hr>
+  <fieldset>
+    <legend>Userstories left</legend>
+        <div class="well">
+            <ul class="list-unstyled">
+                <li class="btn userstory-select" ng-repeat="userstory in backlog.userStories | orderBy: name" ng-class="isCommited(userstory) ? 'btn-success': 'btn-primary'" ng-click="toggleCommit(userstory)">
+                   <span class="glyphicon" ng-class="isCommited(userstory) ? 'glyphicon-ok' : 'glyphicon-plus'"></span> {{userstory.name}}
+                </li>
+            </ul>
+        </div>
+    </fieldset>
+  <button class="btn btn-success" ng-click="saveSprint(activeSprint)">
+    <span class="glyphicon glyphicon-plus"></span> Save
+  </button>
+  <button class="btn btn-danger" ng-click="showSprintForm = false">
+    <span class="glyphicon glyphicon-remove"></span> Close
+  </button>
+</form>
+<!-- end sprint form -->
+</div>

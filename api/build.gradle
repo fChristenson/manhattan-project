@@ -1,0 +1,36 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'spring-boot'
+
+group = 'se.amigos'
+version = 'v1.0'
+
+description = """api"""
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+
+buildscript {
+    repositories {
+        maven { url "http://repo.spring.io/libs-snapshot" }
+        mavenLocal()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.2.RELEASE")
+    }
+}
+repositories {
+        
+     maven { url "http://repo.spring.io/libs-snapshot" }
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version:'1.0.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-rest', version:'1.0.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-mongodb', version:'1.0.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'1.0.0.RELEASE'
+    compile group: 'junit', name: 'junit', version:'4.11'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-batch', version:'1.0.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version:'1.0.2.RELEASE'
+}
